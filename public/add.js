@@ -1,12 +1,4 @@
-const view = require("./view.js");
-const connection = require("./app.js");
-
-exports.addEmployee = (add) => {
-  view.getAllRoles((rolesResults) => {
-    var roles = [];
-    for (var i = 0; i < rolesResults.length; i++) {
-      roles.push(rolesResults[i].title);
-    }
+addEmployee = () => {
     var options = [
       {
         type: "input",
@@ -24,23 +16,27 @@ exports.addEmployee = (add) => {
         type: "list",
         message: "Employee Role",
         name: "role",
-        choices: roles,
+        choices: ['writer',
+        'art director', 
+        'producer',
+        'editor', 
+        'colorist',
+        'animation',                 
+        'sound enginer', 
+        'director', 
+        'cinematographer',
+        'production manager]
       },
     ];
-
+  
     inquirer.prompt(options).then((answers) => {
-      var roleId = null;
-      for (var i = 0; i < rolesResults.length; i++) {
-        if (rolesResults[i].title === answers.role) {
-          roleId = rolesResults[i].role_id;
-        }
-      }
+    
       connection.query(
         "INSERT INTO employees SET ?",
         {
           first_name: answers.firstName,
           last_name: answers.lastName,
-          em_role_id: roleId,
+          title: answers.role,
         },
         (err) => {
           if (err) throw err;
@@ -50,5 +46,4 @@ exports.addEmployee = (add) => {
         }
       );
     });
-  });
-};
+  };

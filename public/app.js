@@ -51,19 +51,19 @@ start = () => {
           break;
         case "add a department":
           addDept();
-          next();
+
           break;
         case "add a role":
           addRole();
-          next();
+
           break;
         case "add an employee":
           addEmployee();
-          next();
+
           break;
         case "Update employee role":
           updateRole();
-          next();
+
           break;
       }
     });
@@ -111,7 +111,7 @@ viewAllEmployees = () => {
 };
 
 updateRole = (update) => {
-  getAllEmployees(function (employeeResults) {
+  viewAllEmployees(function (employeeResults) {
     console.log("test here:");
     console.log(employeeResults);
     var employees = [];
@@ -139,7 +139,7 @@ updateRole = (update) => {
         },
       ])
       .then((answers) => {
-        getAllRoles(function (rolesResults) {
+        viewAllRoles(function (rolesResults) {
           var roles = [];
           console.log(answers.employee);
 
@@ -182,53 +182,52 @@ updateRole = (update) => {
 };
 
 addEmployee = () => {
-  getAllRoles((rolesResults) => {
-    var roles = [];
-    for (var i = 0; i < rolesResults.length; i++) {
-      roles.push(rolesResults[i].title);
-    }
-    var options = [
-      {
-        type: "input",
-        message: "Employee First Name",
-        name: "firstName",
-        default: "joe",
-      },
-      {
-        type: "input",
-        message: "Employee Last Name",
-        name: "lastName",
-        default: "sixpack",
-      },
-      {
-        type: "list",
-        message: "Employee Role",
-        name: "role",
-        choices: roles,
-      },
-    ];
+  var options = [
+    {
+      type: "input",
+      message: "Employee First Name",
+      name: "firstName",
+      default: "joe",
+    },
+    {
+      type: "input",
+      message: "Employee Last Name",
+      name: "lastName",
+      default: "sixpack",
+    },
+    {
+      type: "list",
+      message: "Employee Role",
+      name: "role",
+      choices: [
+        "writer",
+        "art director",
+        "producer",
+        "editor",
+        "colorist",
+        "animation",
+        "sound enginer",
+        "director",
+        "cinematographer",
+        "production manager",
+      ],
+    },
+  ];
 
-    inquirer.prompt(options).then((answers) => {
-      var roleId = null;
-      for (var i = 0; i < rolesResults.length; i++) {
-        if (rolesResults[i].title === answers.role) {
-          roleId = rolesResults[i].role_id;
-        }
+  inquirer.prompt(options).then((answers) => {
+    connection.query(
+      "INSERT INTO employees SET ?",
+      {
+        first_name: answers.firstName,
+        last_name: answers.lastName,
+        title: answers.role,
+      },
+      (err) => {
+        if (err) throw err;
+        console.log(
+          "Successfully added " + answers.firstName + " " + answers.lastName
+        );
       }
-      connection.query(
-        "INSERT INTO employees SET ?",
-        {
-          first_name: answers.firstName,
-          last_name: answers.lastName,
-          em_role_id: roleId,
-        },
-        (err) => {
-          if (err) throw err;
-          console.log(
-            "Successfully added " + answers.firstName + " " + answers.lastName
-          );
-        }
-      );
-    });
+    );
   });
 };

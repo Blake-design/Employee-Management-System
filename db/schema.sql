@@ -22,12 +22,11 @@ CREATE TABLE employee_role (
 
 DROP TABLE IF EXISTS employees;
 CREATE TABLE employees (
-  em_id INT NOT NULL AUTO_INCREMENT,
+  em_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(30) NOT NULL,
   last_name VARCHAR(30) NOT NULL,
   em_role_id INT NOT NULL,
   manager_id INT,
-  PRIMARY KEY (em_id),
-    FOREIGN KEY (em_role_id) REFERENCES employee_role(role_id)
 );
+
 

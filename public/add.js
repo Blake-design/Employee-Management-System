@@ -1,4 +1,5 @@
-var view = require("./view.js");
+const view = require("./view.js");
+const connection = require("./app.js");
 
 exports.addEmployee = (add) => {
   view.getAllRoles((rolesResults) => {
@@ -34,7 +35,7 @@ exports.addEmployee = (add) => {
           roleId = rolesResults[i].role_id;
         }
       }
-      db.query(
+      connection.query(
         "INSERT INTO employees SET ?",
         {
           first_name: answers.firstName,

@@ -1,6 +1,7 @@
 const inquirer = require("inquirer");
-var app = require("./app.js");
-var view = require("./view.js");
+const app = require("./app.js");
+const view = require("./view.js");
+const connection = require("./app.js");
 
 exports.updateRole = (update) => {
   view.getAllEmployees(function (employeeResults) {
@@ -58,7 +59,7 @@ exports.updateRole = (update) => {
             .then((results) => {
               console.log("results...");
               console.log(results.role);
-              db.query(
+              connection.query(
                 "UPDATE employees SET em_role_id = ? WHERE em_id = ?",
                 [results.role.id, answers.employee.id],
                 (err) => {

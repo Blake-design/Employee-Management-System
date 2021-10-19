@@ -1,3 +1,5 @@
+
+
 INSERT INTO department (dept_name) 
     VALUES ("pre-production"),("post-production"), ('management')
     ;

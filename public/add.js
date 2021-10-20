@@ -63,9 +63,9 @@ const addEmployee = (next) => {
         console.log(
           "Successfully added " + answers.firstName + " " + answers.lastName
         );
+        next();
       }
     );
-    next();
   });
 };
 

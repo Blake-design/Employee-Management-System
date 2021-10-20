@@ -1,116 +1,18 @@
 const inquirer = require("inquirer");
-const mysql = require("mysql2");
+
 require("console.table");
-require("dotenv").config();
 
-const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "Mijo2011!",
-  database: "company_db",
-});
+const {
+  viewAllRoles,
+  viewAllDepartments,
+  viewAllEmployees,
+} = require("./view.js");
 
-connection.connect((err) => {
-  if (err) throw err;
-  start();
-});
+const { addEmployee } = require("./add.js");
 
 console.log("Welcome to your personal CMS");
 
-start = () => {
-  inquirer
-    .prompt([
-      {
-        type: "list",
-        message: "What would you like to do today?",
-        name: "choice",
-        choices: [
-          "view all departments",
-          "view all roles",
-          "view all employees",
-          "add a department",
-          "add a role",
-          "add an employee",
-          "update an employee role",
-        ],
-      },
-    ])
-    .then((answer) => {
-      switch (answer.choice) {
-        case "view all departments":
-          viewAllDepartments();
-          next();
-          break;
-        case "view all roles":
-          viewAllRoles();
-          next();
-          break;
-        case "view all employees":
-          viewAllEmployees();
-          next();
-          break;
-        case "add a department":
-          addDept();
-
-          break;
-        case "add a role":
-          addRole();
-
-          break;
-        case "add an employee":
-          addEmployee();
-
-          break;
-        case "Update employee role":
-          updateRole();
-
-          break;
-      }
-    });
-};
-
-next = () => {
-  inquirer
-    .prompt([
-      {
-        type: "list",
-        message: "Would you like to continue?",
-        name: "next",
-        choices: ["yes", "no"],
-      },
-    ])
-    .then((answer) => {
-      console.log(answer.next);
-      if (answer.next === "yes") {
-        start();
-      } else {
-        throw new Error("Goodbye :)");
-      }
-    });
-};
-
-viewAllRoles = () => {
-  connection.query("SELECT * FROM employee_role", (err, results) => {
-    if (err) throw err;
-    return console.table(results);
-  });
-};
-
-viewAllDepartments = () => {
-  connection.query("SELECT * FROM department", (err, results) => {
-    if (err) throw err;
-    return console.table(results);
-  });
-};
-
-viewAllEmployees = () => {
-  connection.query("SELECT * FROM employees", (err, results) => {
-    if (err) throw err;
-    return console.table(results);
-  });
-};
-
-updateRole = (update) => {
+const updateRole = (update) => {
   viewAllEmployees(function (employeeResults) {
     console.log("test here:");
     console.log(employeeResults);
@@ -181,53 +83,75 @@ updateRole = (update) => {
   });
 };
 
-addEmployee = () => {
-  var options = [
-    {
-      type: "input",
-      message: "Employee First Name",
-      name: "firstName",
-      default: "joe",
-    },
-    {
-      type: "input",
-      message: "Employee Last Name",
-      name: "lastName",
-      default: "sixpack",
-    },
-    {
-      type: "list",
-      message: "Employee Role",
-      name: "role",
-      choices: [
-        "writer",
-        "art director",
-        "producer",
-        "editor",
-        "colorist",
-        "animation",
-        "sound enginer",
-        "director",
-        "cinematographer",
-        "production manager",
-      ],
-    },
-  ];
-
-  inquirer.prompt(options).then((answers) => {
-    connection.query(
-      "INSERT INTO employees SET ?",
+const next = () => {
+  inquirer
+    .prompt([
       {
-        first_name: answers.firstName,
-        last_name: answers.lastName,
-        title: answers.role,
+        type: "list",
+        message: "Would you like to continue?",
+        name: "next",
+        choices: ["yes", "no"],
       },
-      (err) => {
-        if (err) throw err;
-        console.log(
-          "Successfully added " + answers.firstName + " " + answers.lastName
-        );
+    ])
+    .then((answer) => {
+      console.log(answer.next);
+      if (answer.next === "yes") {
+        start();
+      } else {
+        throw new Error("Goodbye :)");
       }
-    );
-  });
+    });
 };
+function start() {
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        message: "What would you like to do today?",
+        name: "choice",
+        choices: [
+          "view all departments",
+          "view all roles",
+          "view all employees",
+          "add a department",
+          "add a role",
+          "add an employee",
+          "update an employee role",
+        ],
+      },
+    ])
+    .then((answer) => {
+      switch (answer.choice) {
+        case "view all departments":
+          viewAllDepartments(next);
+
+          break;
+        case "view all roles":
+          viewAllRoles(next);
+
+          break;
+        case "view all employees":
+          viewAllEmployees(next);
+
+          break;
+        case "add a department":
+          addDept();
+
+          break;
+        case "add a role":
+          addRole();
+
+          break;
+        case "add an employee":
+          addEmployee();
+
+          break;
+        case "Update employee role":
+          updateRole();
+
+          break;
+      }
+    });
+}
+
+start();

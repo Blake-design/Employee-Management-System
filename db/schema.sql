@@ -12,7 +12,7 @@ CREATE TABLE department (
 DROP TABLE IF EXISTS employee_role;
 CREATE TABLE employee_role (
   role_id INT NOT NULL AUTO_INCREMENT,
-  title VARCHAR(30) NOT NULL,
+title VARCHAR(30) NOT NULL,  
   salary VARCHAR(30) NOT NULL,
    dept_id INT,
     PRIMARY KEY (role_id),
@@ -25,8 +25,11 @@ CREATE TABLE employees (
   em_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(30) NOT NULL,
   last_name VARCHAR(30) NOT NULL,
+  title VARCHAR(30) NOT NULL,  
   em_role_id INT NOT NULL,
-  manager_id INT,
+   FOREIGN KEY (em_role_id)
+     REFERENCES employee_role(role_id),
+  manager_id INT
 );
 
 

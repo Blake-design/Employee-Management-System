@@ -8,7 +8,7 @@ const {
   viewAllEmployees,
 } = require("./view.js");
 
-const { addEmployee } = require("./add.js");
+const { addEmployee, addDept, addRole } = require("./add.js");
 
 console.log("Welcome to your personal CMS");
 
@@ -135,15 +135,15 @@ function start() {
 
           break;
         case "add a department":
-          addDept();
+          addDept(next);
 
           break;
         case "add a role":
-          addRole();
+          addRole(next);
 
           break;
         case "add an employee":
-          addEmployee();
+          addEmployee(next);
 
           break;
         case "Update employee role":

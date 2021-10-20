@@ -26,10 +26,13 @@ CREATE TABLE employees (
   first_name VARCHAR(30) NOT NULL,
   last_name VARCHAR(30) NOT NULL,
   title VARCHAR(30) NOT NULL,  
-  em_role_id INT NOT NULL,
-   FOREIGN KEY (em_role_id)
-     REFERENCES employee_role(role_id),
-  manager_id INT
+  role_id int,
+  FOREIGN KEY (role_id)
+  REFERENCES employee_role(role_id),
+  dept_id INT NOT NULL,
+   FOREIGN KEY (dept_id)
+     REFERENCES department(dept_id),
+  manager VARCHAR(30)
 );
 
 

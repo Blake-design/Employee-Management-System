@@ -6,7 +6,7 @@ This project was created for a UTSA boocamp homework assignment. it was meant to
 
 The app is designed view and delete data by using a server database.
 
-[![Product demo] [product-demo]](https://drive.google.com/drive/folders/1rTKE1iYvt8bPBPKj6O46ny15hzyBGWW3)
+[![Product demo] [product-demo]](https://drive.google.com/file/d/1VJwijeLFZ17nHwSKua8cokDcx1_ggNlH/view?usp=sharing)
 
 ## Deployment
 
